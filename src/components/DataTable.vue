@@ -1,7 +1,10 @@
 <template>
   <div>
     <q-table
-      flat bordered
+      @click="$q.screen.lt.md ? openDialog = true : '' "
+      @row-click="actionPopup"
+      flat 
+      bordered
       :title="title"
       :rows="rows"
       :columns="columns"
@@ -20,7 +23,7 @@
           <q-btn
             v-for="button in buttons"
             :key="button.event"
-            @click="button.event"
+            @click="$emit(button.event, props.rowIndex)"
             :icon="button.icon"
             :color="button.color"
             class="q-px-sm q-ml-xs"
@@ -36,10 +39,17 @@
       </template>
     </q-table>
   </div>
+  <PopUp
+    :actions="buttons"
+    :dialogOpen="openDialog"
+    @emittedEvent="popupEvent"
+    @close="openDialog = false"
+  />
 </template>
 
 <script>
 import { ref } from 'vue'
+import PopUp from './PopUp.vue';
 export default {
   props: {
     title: {
@@ -55,12 +65,26 @@ export default {
       type: Array
     },
   },
+  components:{
+    PopUp
+  },
   data() {
     return {
+      id: null,
       separator: ref('vertical'),
       pagination: ref({
         rowsPerPage: [10]
       }),
+      openDialog: false,
+    }
+  },
+  methods: {
+    actionPopup(e, row, index) {
+      this.id = index;
+    },
+
+    popupEvent(eventName) {
+      this.$emit(eventName, this.id);
     }
   }
 }

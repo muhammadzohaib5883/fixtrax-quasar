@@ -22,6 +22,7 @@ const routes = [
       { path: '/login', component: () => import('pages/Login.vue') },
       { path: '/add-customer', component: () => import('pages/AddCustomer.vue') },
       { path: '/add-vehicle', component: () => import('pages/AddVehicle.vue') },
+      { path: '/edit-vehicle/:index', component: () => import('pages/AddVehicle.vue') },
       { path: '/add-order', component: () => import('pages/AddOrder.vue') },
       { path: '/add-expense', component: () => import('pages/AddExpense.vue') },
       { path: '/add-employ', component: () => import('pages/AddEmploy.vue') },

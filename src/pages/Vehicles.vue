@@ -15,8 +15,10 @@
     <DataTable
       :title="tableTitle"
       :columns="tableColumns"
-      :rows="tableRows"
+      :rows="vehicles"
       :buttons="tableButtons"
+      @deleteVehicle="deleteData"
+      @editVehicle="(index) => $router.push('edit-vehicle/'+ index)"
     />
 
   </q-page>
@@ -24,34 +26,36 @@
 
 <script>
 import { defineComponent } from 'vue';
+import {useAppStore} from 'src/stores/app';
 import DataTable from "components/DataTable.vue";
+import { LocalStorage } from 'quasar';
 const columns = [
   {
-    name: 'calories',
+    name: 'select_customer',
     align: 'left',
     label: 'Name',
-    field: 'name',
+    field: 'select_customer',
     sortable: true
   },
   {
-    name: 'calories',
+    name: 'Vin',
     align: 'left',
     label: 'VIN',
     field: 'vin',
     sortable: true
   },
   {
-    name: 'calories',
+    name: 'license_plate_number',
     align: 'left',
     label: 'Licence Plate',
-    field: 'licencePlate',
+    field: 'license_plate_number',
     sortable: true
   },
   {
-    name: 'calories',
+    name: 'city',
     align: 'left',
     label: 'Customer Name',
-    field: 'customerName',
+    field: 'city',
     sortable: true
   },
   {
@@ -61,69 +65,53 @@ const columns = [
     field: row => row.e,
     sortable: true
   },
-]
-const rows = [
-  {
-    name: 'Frozen Yogurt',
-    vin: '1FTPX14514K245449',
-    licencePlate: 'ABC1234 [NJ]',
-    customerName: 'Emily Krausers'
-  },
-  {
-    name: 'Frozen Yogurt',
-    vin: '1FTPX14514K245449',
-    licencePlate: 'ABC1234 [NJ]',
-    customerName: 'Emily Krausers'
-  },
-  {
-    name: 'Frozen Yogurt',
-    vin: '1FTPX14514K245449',
-    licencePlate: 'ABC1234 [NJ]',
-    customerName: 'Emily Krausers'
-  },
-  {
-    name: 'Frozen Yogurt',
-    vin: '1FTPX14514K245449',
-    licencePlate: 'ABC1234 [NJ]',
-    customerName: 'Emily Krausers'
-  },
-  {
-    name: 'Frozen Yogurt',
-    vin: '1FTPX14514K245449',
-    licencePlate: 'ABC1234 [NJ]',
-    customerName: 'Emily Krausers'
-  },
-  {
-    name: 'Frozen Yogurt',
-    vin: '1FTPX14514K245449',
-    licencePlate: 'ABC1234 [NJ]',
-    customerName: 'Emily Krausers'
-  },
-]
+];
 const buttons = [
   {
     icon: 'edit',
     color: 'primary',
-    event: ''
+    event: 'editVehicle',
+    label: 'edit',
+  },      
+  {
+    icon: 'delete',
+    color: 'red-10',
+    event: 'deleteVehicle',
+    label: 'delete',
   },
   {
     icon: 'shopping_cart',
     color: 'primary',
-    event: ''
+    event: '',
+    label: 'cart',
   }
 ]
 export default defineComponent({
   name: 'Vehicles',
   components: {
     DataTable
-  },
+},
   data() {
     return {
       tableTitle: 'Vehicles',
       tableColumns: columns,
-      tableRows: rows,
-      tableButtons: buttons
+      tableButtons: buttons,
+      store: useAppStore(),
     }
+  },
+
+  computed: {
+    vehicles() {
+      return this.store.vehicles;
+    }
+  },
+
+  methods: {
+    deleteData(index) {
+      this.store.vehicles.splice(index, 1);
+      LocalStorage.set('vehicles', this.store.vehicles);
+    },
+
   }
 })
 </script>

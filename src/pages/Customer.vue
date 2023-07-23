@@ -2,19 +2,9 @@
   <q-page padding>
     <!-- content -->
 
-    <q-btn label="Close Icon" color="primary" @click="icon = true" />
+    <q-btn label="Dialog" color="primary" @click="dialog = true" />
 
-    <q-dialog v-model="icon" persistent>
-      <!--      <q-card>-->
-      <!--        <q-card-section class="row items-center q-pb-none">-->
-      <!--          <div class="text-h6">Add Customer</div>-->
-      <!--          <q-space />-->
-      <!--          <q-btn icon="close" flat round dense v-close-popup />-->
-      <!--        </q-card-section>-->
-      <!--        <q-card-section>-->
-      <!--          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.-->
-      <!--        </q-card-section>-->
-      <!--      </q-card>-->
+    <q-dialog v-model="dialog" persistent>
       <q-card>
         <q-toolbar elevated class="bg-primary text-white">
           <q-toolbar-title>Add Customer</q-toolbar-title>
@@ -24,49 +14,115 @@
           <q-form>
             <div class="row q-col-gutter-md q-mt-xs">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <q-input filled label="First Name" v-model="form.first_name"
-                  :rules="[val => !!val || 'Please Type Somethings']" />
+                <q-input 
+                  filled 
+                  label="First Name" 
+                  v-model="form.first_name"
+                  :rules="validationRuls" 
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <q-input filled label="Address Line 1" v-model="form.address_line_one"
-                  :rules="[val => !!val || 'Please Type Somethings']" />
+                <q-input 
+                  filled 
+                  label="Address Line 1" 
+                  v-model="form.address_line_one"
+                  :rules="validationRuls" 
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 input-margin">
-                <q-input filled label="Middle Name" style="" v-model="form.middle_name"
-                  :rules="[val => !!val || 'Please Type Somethings']" />
+                <q-input 
+                  filled 
+                  label="Middle Name" 
+                  style="" 
+                  v-model="form.middle_name"
+                  :rules="validationRuls"
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 input-margin">
-                <q-input filled label="Address Line 2" v-model="form.address_line_two"
-                  :rules="[val => !!val || 'Please Type Somethings']" />
+                <q-input 
+                  filled 
+                  label="Address Line 2" 
+                  v-model="form.address_line_two"
+                  :rules="validationRuls" 
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 input-margin">
-                <q-input filled label="Last Name" v-model="form.last_name"
-                  :rules="[val => !!val || 'Please Type Somethings']" />
+                <q-input 
+                  filled 
+                  label="Last Name" 
+                  v-model="form.last_name"
+                  :rules="validationRuls" 
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 input-margin">
-                <q-input filled label="City" v-model="form.city" :rules="[val => !!val || 'Please Type Somethings']" />
+                <q-input 
+                  filled 
+                  label="City" 
+                  v-model="form.city" 
+                  :rules="validationRuls" 
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 input-margin">
-                <q-input filled label="Email" v-model="form.email" :rules="[val => !!val || 'Please Type SomeThings']" />
+                <q-input 
+                  filled 
+                  label="Email" 
+                  v-model="form.email" 
+                  :rules="validationRuls" 
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 input-margin">
-                <q-select filled v-model="form.select_state" :options="options" label="Select State" behavior="menu"
-                  :rules="[val => !!val || 'Please Type Somethings']" />
+                <q-select 
+                  filled 
+                  v-model="form.select_state" 
+                  :options="options" 
+                  label="Select State" 
+                  behavior="menu"
+                  :rules="validationRuls" 
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 input-margin">
-                <q-input filled v-model="form.phone" label="Phone" :rules="[val => !!val || 'Please Type Somethings']" />
+                <q-input 
+                  filled 
+                  v-model="form.phone" 
+                  label="Phone" 
+                  :rules="validationRuls" 
+                />
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 input-margin">
-                <q-input filled type="number" label="Postel Code" v-model="form.postel_code"
-                  :rules="[val => !!val && val.length > 0 || 'Please Type Somethings']" />
+                <q-input 
+                  filled 
+                  type="number" 
+                  label="Postel Code" 
+                  v-model="form.postel_code"
+                  :rules="validationRuls"
+                />
               </div>
               <div class="col-12">
-                <q-btn label="Add Customer" color="primary" icon="add" class="text-subtitle1 full-width"
-                  @click="addRecord" />
+                <q-btn 
+                  label="Add Customer" 
+                  color="primary" 
+                  icon="add" 
+                  v-if="addButton"
+                  class="text-subtitle1 full-width"
+                  @click="addRecord" 
+                />
+                <q-btn
+                  label="update"
+                  icon="update"
+                  v-if="updateButton"
+                  color="secondary"
+                  class="text-subtitle1 full-width"
+                  @click="updateRecord"
+                />
               </div>
               <div class="col-12">
-                <q-btn label="Reset" color="red-10" icon="backspace" class="q-ml-sm text-subtitle1 full-width"
-                  @click="resetForm" />
+                <q-btn 
+                  label="Reset" 
+                  color="red-10" 
+                  icon="backspace" 
+                  class="q-ml-sm text-subtitle1 full-width"
+                  @click="resetForm" 
+                />
               </div>
             </div>
           </q-form>
@@ -75,10 +131,23 @@
     </q-dialog>
 
     <div class="text-right q-mt-md q-mr-xs">
-      <q-btn label="ADD CUSTOMER" color="green" icon="add" to="/add-customer" class="text-subtitle1" />
+      <q-btn 
+        label="ADD CUSTOMER" 
+        color="green" 
+        icon="add" 
+        to="/add-customer" 
+        class="text-subtitle1" 
+      />
     </div>
 
-    <DataTable :title="tableTitle" :columns="tableColumns" :rows="tableRows" :buttons="tableButtons" />
+    <DataTable 
+      :title="tableTitle" 
+      :columns="tableColumns" 
+      :rows="customerArray" 
+      :buttons="buttons"
+      @deleteRecord="deleteRecord"
+      @editRecord="editRecord"
+    />
 
   </q-page>
 </template>
@@ -87,12 +156,13 @@
 import { defineComponent } from 'vue';
 import { ref } from 'vue'
 import DataTable from "components/DataTable.vue";
-const columns = [
+import { LocalStorage } from 'quasar';
+const tableColumns = [
   {
     name: 'calories',
     align: 'left',
     label: 'Name',
-    field: 'name',
+    field: 'first_name',
     sortable: true
   },
   {
@@ -117,88 +187,12 @@ const columns = [
     sortable: true
   },
 ]
-export const customerArray = [
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-  {
-    name: 'Frozen Yogurt',
-    email: 'FrozenYogurt@gmail.com',
-    phone: '0300-5858183',
-  },
-]
+let customerArray = JSON.parse(LocalStorage.getItem('customer')) ?? []
 const buttons = [
   {
     icon: 'edit',
     color: 'primary',
-    event: ''
+    event: 'editRecord'
   },
   {
     icon: 'directions_car',
@@ -209,6 +203,11 @@ const buttons = [
     icon: 'shopping_cart',
     color: 'primary',
     event: ''
+  },
+  {
+    icon: 'delete',
+    color: 'red-10',
+    event: 'deleteRecord'
   }
 ]
 export default defineComponent({
@@ -219,28 +218,32 @@ export default defineComponent({
   data() {
     return {
       tableTitle: 'Customers',
-      tableColumns: columns,
-      tableRows: customerArray,
-      tableButtons: buttons,
-      icon: ref(false),
+      tableColumns,
+      customerArray,
+      buttons,
+      dialog: ref(false),
       model: ref(null),
+      editId: null,
+      validationRuls: [val => !!val || 'Please Type Somethings'],
       options: ['Lahore', 'Kusar', 'Kangan pur', 'Okara', 'Swat'],
+      addButton: true,
+      updateButton: false,
       form: {
-        first_name: null,
-        address_line_one: null,
-        middle_name: null,
-        address_line_two: null,
-        last_name: null,
-        city: null,
-        email: null,
-        select_state: null,
-        phone: null,
-        postel_code: null
+        first_name: '',
+        address_line_one: '',
+        middle_name: '',
+        address_line_two: '',
+        last_name: '',
+        city: '',
+        email: '',
+        select_state: '',
+        phone: '',
+        postel_code: ''
       }
     }
   },
   methods: {
-    resetForm() {
+    clearForm() {
       this.form.first_name = null
       this.form.address_line_one = null
       this.form.middle_name = null
@@ -267,7 +270,54 @@ export default defineComponent({
       }
       console.log(obj)
       this.customerArray.push(obj)
-      this.$router.push({ path: '/customer' })
+      this.clearForm()
+      this.dialog = ref(false)
+      if (LocalStorage.getItem('customer') !== null) {
+        LocalStorage.set('customer', JSON.stringify(this.customerArray))
+      } else {
+        LocalStorage.set('customer', JSON.stringify(this.customerArray))
+      }
+    },
+    deleteRecord(i) {
+      this.customerArray.splice(i, 1)
+      LocalStorage.set('customer', JSON.stringify(this.customerArray))
+    },
+    editRecord(i) {
+      console.log(i)
+      this.dialog = ref(true)
+      this.addButton = false
+      this.updateButton = true
+      this.editId = i
+      this.form.first_name = customerArray[i].first_name
+      this.form.address_line_one = customerArray[i].address_line_one
+      this.form.middle_name = customerArray[i].middle_name
+      this.form.address_line_two = customerArray[i].address_line_two
+      this.form.last_name = customerArray[i].last_name
+      this.form.city = customerArray[i].city
+      this.form.email = customerArray[i].email
+      this.form.select_state = customerArray[i].select_state
+      this.form.phone = customerArray[i].phone
+      this.form.postel_code = customerArray[i].postel_code
+    },
+    updateRecord() {
+      this.updateButton = false
+      this.addButton = true
+      let obj = {
+        first_name: this.form.first_name,
+        address_line_one: this.form.address_line_one,
+        middle_name: this.form.middle_name,
+        address_line_two: this.form.address_line_two,
+        last_name: this.form.last_name,
+        city: this.form.city,
+        email: this.form.email,
+        select_state: this.form.select_state,
+        phone: this.form.phone,
+        postel_code: this.form.postel_code
+      }
+      this.customerArray[this.editId] = obj
+      LocalStorage.set('customer', JSON.stringify(this.customerArray))
+      this.dialog = ref(false)
+      this.clearForm()
     }
   }
 })
